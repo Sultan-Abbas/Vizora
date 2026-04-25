@@ -1,20 +1,80 @@
-<div align="center">
-<img width="1200" height="475" alt="GHBanner" src="https://github.com/user-attachments/assets/0aa67016-6eaf-458a-adb2-6e31a0763ed6" />
-</div>
+# 🎬 3D AI Motion Capture Editor
 
-# Run and deploy your AI Studio app
+A web-based motion capture editor that extracts human pose data from video using AI and visualizes it in a real-time 3D environment.
 
-This contains everything you need to run your app locally.
+Built with **React + TypeScript + Vite + Tailwind CSS**, powered by **TensorFlow BlazePose**, **Firebase**, and **Three.js**.
 
-View your app in AI Studio: https://ai.studio/apps/47d97187-a966-4aff-8c65-bc89a9a7916d
+---
 
-## Run Locally
+## 🚀 Features
 
-**Prerequisites:**  Node.js
+### 🔐 Authentication & Backend
+- Google Sign-In via Firebase Authentication
+- Firestore database for persistent project storage
+- User dashboard to create, manage, and delete motion capture projects
 
+---
 
-1. Install dependencies:
-   `npm install`
-2. Set the `GEMINI_API_KEY` in [.env.local](.env.local) to your Gemini API key
-3. Run the app:
-   `npm run dev`
+### 🧠 AI Motion Extraction
+- Uses `@tensorflow-models/pose-detection`
+- MediaPipe BlazePose (full model)
+- Processes uploaded videos directly in-browser
+- Extracts 3D keypoints `[x, y, z]` frame-by-frame
+- Optimized coordinate precision for smooth animation
+- Stores motion data in Firestore
+
+---
+
+### 🌐 3D Viewport
+- Built with `@react-three/fiber` and `@react-three/drei`
+- Features:
+  - Responsive grid
+  - Lighting system
+  - OrbitControls camera navigation
+- Real-time 3D motion rendering
+
+---
+
+### 🦴 Animation Mapping
+- `<Viewport3D />` reads motion data from Firestore
+- Normalizes and processes vectors
+- Applies SLERP (Spherical Linear Interpolation)
+- Supports:
+  - Primitive skeleton (cylinder joints)
+  - Imported `.glb` humanoid rigs (X-Bot, Y-Bot)
+
+---
+
+### 🎛 Editor UI
+- Timeline system with play/pause controls
+- Frame-synced scrubber
+- Side panel:
+  - Import `.glb` models via URL
+  - Select preset humanoid rigs
+- Real-time log viewer for AI processing pipeline
+
+---
+
+## 🏗 Tech Stack
+
+**Frontend**
+- React (Vite)
+- TypeScript
+- Tailwind CSS
+
+**3D Engine**
+- Three.js
+- React Three Fiber
+- Drei
+
+**AI / ML**
+- TensorFlow.js
+- MediaPipe BlazePose
+
+**Backend**
+- Firebase Authentication
+- Firestore
+
+---
+
+## 📁 Project Structure
