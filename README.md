@@ -78,3 +78,23 @@ Built with **React + TypeScript + Vite + Tailwind CSS**, powered by **TensorFlow
 ---
 
 ## 📁 Project Structure
+src/
+├── components/
+│ ├── Viewport3D.tsx
+│ ├── Timeline.tsx
+│ ├── Sidebar.tsx
+│ └── LogViewer.tsx
+│
+├── pages/
+│ ├── Dashboard.tsx
+│ ├── Editor.tsx
+│ └── Login.tsx
+│
+├── services/
+│ ├── firebase.ts
+│ ├── motionProcessor.ts
+│ └── poseDetection.ts
+│
+├── hooks/
+├── utils/
+└── types/
