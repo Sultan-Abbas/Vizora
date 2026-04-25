@@ -1,0 +1,24 @@
+{
+  "entities": {
+    "Project": {
+      "title": "Project",
+      "description": "A Vizora motion capture project",
+      "type": "object",
+      "properties": {
+        "userId": { "type": "string", "description": "Owner ID" },
+        "name": { "type": "string", "description": "Project Name" },
+        "status": { "type": "string", "enum": ["draft", "uploading", "preprocessing", "extracting", "ready", "error"], "description": "Pipeline status" },
+        "motionData": { "type": "string", "description": "Stringified motion data for 3D skeleton" },
+        "createdAt": { "type": "number" },
+        "updatedAt": { "type": "number" }
+      },
+      "required": ["userId", "name", "status", "createdAt", "updatedAt"]
+    }
+  },
+  "firestore": {
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "User projects containing motion logic"
+    }
+  }
+}

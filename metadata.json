@@ -1,0 +1,5 @@
+{
+  "name": "Vizora",
+  "description": "Motion capture and 3D rig visualization platform with Blender integration",
+  "requestFramePermissions": []
+}

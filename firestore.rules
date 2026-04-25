@@ -1,0 +1,47 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} { 
+      allow read, write: if false; 
+    }
+    
+    function isValidId(id) { 
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$'); 
+    }
+    function incoming() { return request.resource.data; }
+    function existing() { return resource.data; }
+    function isSignedIn() { return request.auth != null; }
+    
+    function isValidProject(data) {
+      return data.keys().hasAll(['userId', 'name', 'status', 'createdAt', 'updatedAt']) 
+      && data.userId is string && data.userId.size() <= 128 && data.userId == request.auth.uid
+      && data.name is string && data.name.size() <= 200
+      && data.status in ['draft', 'uploading', 'preprocessing', 'extracting', 'ready', 'error']
+      && data.createdAt is timestamp
+      && data.updatedAt is timestamp
+      && (data.keys().size() == 5 || (data.keys().size() == 6 && data.motionData is string));
+    }
+
+    match /projects/{projectId} {
+      allow list: if isSignedIn() && resource.data.userId == request.auth.uid;
+      allow get: if isSignedIn() && isValidId(projectId) && resource.data.userId == request.auth.uid;
+      allow create: if isSignedIn() && isValidId(projectId) 
+        && isValidProject(incoming()) 
+        && incoming().createdAt == request.time
+        && incoming().updatedAt == request.time;
+      allow update: if isSignedIn() && isValidId(projectId) 
+        && existing().userId == request.auth.uid
+        && incoming().updatedAt == request.time
+        && incoming().userId == existing().userId
+        && incoming().createdAt == existing().createdAt
+        && (
+          incoming().diff(existing()).affectedKeys().hasOnly(['status', 'updatedAt', 'motionData']) ||
+          incoming().diff(existing()).affectedKeys().hasOnly(['name', 'updatedAt'])
+        )
+        && incoming().status in ['draft', 'uploading', 'preprocessing', 'extracting', 'ready', 'error']
+        && (incoming().name == existing().name || (incoming().name is string && incoming().name.size() <= 200))
+        && (!('motionData' in incoming()) || (incoming().motionData is string));
+      allow delete: if isSignedIn() && isValidId(projectId) && existing().userId == request.auth.uid;
+    }
+  }
+}
