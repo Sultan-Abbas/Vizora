@@ -1,4 +1,4 @@
-# 🎬 3D AI Motion Capture Editor
+# 🎬 Vizora
 
 A web-based motion capture editor that extracts human pose data from video using AI and visualizes it in a real-time 3D environment.
 
